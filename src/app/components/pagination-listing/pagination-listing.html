@@ -1,0 +1,103 @@
+<div class="pt-2">
+  <h4>Pagination Table</h4>
+  <table class="table">
+    <thead>
+      @for (headerGroup of paginationTable.getHeaderGroups(); track headerGroup.id) {
+        <tr>
+          @for (header of headerGroup.headers; track header.id) {
+            <td>
+              <ng-container
+                *flexRender="
+                  header.column.columnDef.header;
+                  props: header.getContext()
+                  let content
+                ">
+                {{ content }}
+              </ng-container>
+            </td>
+          }
+        </tr>
+      }
+    </thead>
+    <tbody>
+      @for (rows of paginationTable.getRowModel().rows; track rows.id) {
+        <tr>
+          @for (cell of rows.getVisibleCells(); track cell.id) {
+            <td>
+              <ng-container
+                *flexRender="
+                cell.column.columnDef.cell;
+                props: cell.getContext()
+                let content">
+                {{ content }}
+              </ng-container>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <!-- PAGINATION CONTROLS -->
+<div class="d-flex justify-content-between align-items-center mt-3">
+
+  <!-- Page size selector (Industry standard) -->
+  <div>
+    <select
+      class="form-select form-select-sm d-inline-block w-auto"
+      [value]="paginationTable.getState().pagination.pageSize"
+      (change)="paginationTable.setPageSize(+$any($event.target).value)"
+    >
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="20">20</option>
+      <option [value]="50">50</option>
+    </select>
+    <span class="ms-2">rows per page</span>
+  </div>
+
+  <!-- Page navigation -->
+  <div class="btn-group">
+    <button
+      class="btn btn-outline-primary btn-sm"
+      (click)="paginationTable.setPageIndex(0)"
+      [disabled]="!paginationTable.getCanPreviousPage()"
+    >
+      ⏮ First
+    </button>
+
+    <button
+      class="btn btn-outline-primary btn-sm"
+      (click)="paginationTable.previousPage()"
+      [disabled]="!paginationTable.getCanPreviousPage()"
+    >
+      ◀ Prev
+    </button>
+
+    <span class="px-3 align-self-center">
+      Page
+      {{ paginationTable.getState().pagination.pageIndex + 1 }}
+      of
+      {{ paginationTable.getPageCount() }}
+    </span>
+
+    <button
+      class="btn btn-outline-primary btn-sm"
+      (click)="paginationTable.nextPage()"
+      [disabled]="!paginationTable.getCanNextPage()"
+    >
+      Next ▶
+    </button>
+
+    <button
+      class="btn btn-outline-primary btn-sm"
+      (click)="paginationTable.setPageIndex(paginationTable.getPageCount() - 1)"
+      [disabled]="!paginationTable.getCanNextPage()"
+    >
+      Last ⏭
+    </button>
+  </div>
+</div>
+
+
+</div>

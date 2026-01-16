@@ -1,0 +1,56 @@
+
+<div class="p-2">
+  <h4>Basic Table with Sorting</h4>
+  <table class="table">
+    <thead>
+      @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
+        <tr>
+          @for (header of headerGroup.headers; track header.id) {
+            <th (click)="header.column.toggleSorting()"
+              style="cursor: pointer">
+              <ng-container
+                *flexRender="
+                  header.column.columnDef.header;
+                  props: header.getContext();
+                  let content">
+                  {{ content }}
+
+                  <!-- Default sort icon -->
+                  @if (!header.column.getIsSorted()) {
+                    <span class="ms-1">⇅</span>
+                  }
+
+                  <!-- Sorted ascending -->
+                  @if (header.column.getIsSorted() === 'asc') {
+                    <span class="ms-1">↑</span>
+                  }
+
+                  <!-- Sorted descending -->
+                  @if (header.column.getIsSorted() === 'desc') {
+                    <span class="ms-1">↓</span>
+                  }
+              </ng-container>
+            </th>
+          }
+        </tr>
+      }
+    </thead>
+    <tbody>
+      @for (row of table.getRowModel().rows; track row.id) {
+        <tr>
+          @for (cell of row.getVisibleCells(); track cell.id) {
+            <td>
+              <ng-container
+                *flexRender="
+                  cell.column.columnDef.cell;
+                  props: cell.getContext();
+                  let content">
+                  {{ content }}
+              </ng-container>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

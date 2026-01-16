@@ -1,0 +1,63 @@
+<div class="pt-2">
+  <h4> Filter Table</h4>
+   <!-- SINGLE SEARCH INPUT (RIGHT SIDE) -->
+  <input
+    type="text"
+    class="form-control w-25"
+    placeholder="Search First Name..."
+    (input)="setFirstNameFilter($any($event.target).value)"
+  />
+  <table class="table">
+    <thead>
+      @for (headerGroup of filterTable.getHeaderGroups(); track headerGroup.id) {
+        <tr>
+          @for (header of headerGroup.headers; track header.id) {
+            <td>
+              <ng-container
+                *flexRender="
+                  header.column.columnDef.header;
+                  props: header.getContext();
+                  let content
+                ">
+                {{ content }}
+              </ng-container>
+            </td>
+          }
+        </tr>
+        <!-- FILTER INPUT ROW (Industry Standard) -->
+        <tr>
+          @for (header of headerGroup.headers; track header.id) {
+            <th>
+              @if (header.column.getCanFilter()) {
+                <input
+                  class="form-control form-control-sm"
+                  [value]="header.column.getFilterValue() ?? ''"
+                  (input)="header.column.setFilterValue($any($event.target).value)"
+                  placeholder="Search..."
+                />
+              }
+            </th>
+          }
+        </tr>
+      }
+    </thead>
+    <tbody>
+      @for (row of filterTable.getRowModel().rows; track row.id) {
+        <tr>
+          @for (cell of row.getVisibleCells(); track cell.id) {
+            <td>
+              <ng-container
+                *flexRender="
+                  cell.column.columnDef.cell;
+                  props: cell.getContext();
+                  let content
+                ">
+                {{ content }}
+              </ng-container>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

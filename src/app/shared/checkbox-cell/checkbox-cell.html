@@ -1,0 +1,7 @@
+<input
+  type="checkbox"
+  class="form-check-input"
+  [checked]="checked()"
+  [indeterminate]="indeterminate()"
+  (change)="toggle.emit($event.target.checked)"
+/>

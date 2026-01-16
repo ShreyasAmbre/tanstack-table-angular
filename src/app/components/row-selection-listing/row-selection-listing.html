@@ -1,0 +1,53 @@
+<div class="pt-2">
+  <h4>Row Selection Table</h4>
+  <p>
+    Selected: {{ rowSelectionTable.getSelectedRowModel().rows.length }}
+  </p>
+  <table class="table">
+    <thead>
+      @for (headerGroup of rowSelectionTable.getHeaderGroups(); track headerGroup.id) {
+        <tr>
+          @for (header of headerGroup.headers; track header.id) {
+            <td>
+              <ng-container
+              *flexRender="
+                header.column.columnDef.header,
+                props: header.getContext()
+                let content
+              ">
+              {{ content }}
+              </ng-container>
+            </td>
+          }
+        </tr>
+      }
+    </thead>
+    <tbody>
+      @for (rows of rowSelectionTable.getCoreRowModel().rows; track rows.id) {
+        <tr>
+          @for (cell of rows.getVisibleCells(); track cell.id) {
+            <td>
+              <ng-container
+                *flexRender="
+                cell.column.columnDef.cell,
+                props: cell.getContext()
+                let content
+              ">
+              @if (content?.component) {
+                <ng-container
+                  *flexRender="
+                    content;
+                    props: content.props
+                  "
+                ></ng-container>
+              } @else {
+                {{ content }}
+              }
+              </ng-container>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
