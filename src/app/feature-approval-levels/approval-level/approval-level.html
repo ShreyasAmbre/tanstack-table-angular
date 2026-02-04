@@ -1,0 +1,55 @@
+<button class="btn btn-primary mb-2" (click)="addRow()">
+  Add Row
+</button>
+<hr>
+
+<table class="table tanstack-border-table">
+  <thead>
+    @for (headerGroup of approvalLevelTable().getHeaderGroups(); track headerGroup.id) {
+      <tr>
+        @for (header of headerGroup.headers; track header.id) {
+          <th (click)="header.column.toggleSorting()" style="cursor: pointer">
+            <ng-container
+              *flexRender="header.column.columnDef.header; props: header.getContext(); let content"
+            >
+            {{content}}
+            </ng-container>
+          </th>
+        }
+      </tr>
+    }
+  </thead>
+  <tbody
+      #boundaryElement
+      cdkDropList
+      [cdkDropListData]="dataList()"
+      (cdkDropListDropped)="drop($event)"
+    >
+    @for (row of approvalLevelTable().getRowModel().rows; track row.id) {
+      <tr
+          cdkDrag
+          [cdkDragData]="row.original"
+          [cdkDragBoundary]="boundaryElement"
+        >
+        @for (cell of row.getVisibleCells(); track cell.id) {
+          <td>
+            <ng-container
+              *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cellContent"
+            >
+              @if (cellContent?.component) {
+                <ng-container *flexRender="cellContent; props: cellContent.props"> </ng-container>
+              } @else {
+                {{ cellContent }}
+              }
+            </ng-container>
+          </td>
+        }
+      </tr>
+    }@empty {
+      <p class="my-2">No levels added</p>
+    }
+  </tbody>
+</table>
+
+
+<pre>Data: {{ sortedIds() | json }}</pre>

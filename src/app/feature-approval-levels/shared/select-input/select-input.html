@@ -1,0 +1,9 @@
+<ng-select
+  [items]="optionList()"
+  bindLabel="name"
+  [formControl]="control"
+  placeholder="Select employee"
+  [clearable]="true"
+  (change)="onChange($event)"
+>
+</ng-select>
